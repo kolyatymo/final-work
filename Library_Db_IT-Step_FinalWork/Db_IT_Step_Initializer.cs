@@ -38,15 +38,19 @@ namespace Library_Db_IT_Step_FinalWork
             {
                 new Positions()
                 {
-                    Id = 1
+                    Id = 1,
+                    Name = "Teacher"
+
                 },
                 new Positions()
                 {
-                    Id = 2
+                    Id = 2,
+                    Name = "Manager"
                 },
                 new Positions()
                 {
-                    Id = 3
+                    Id = 3,
+                    Name = "Director"
                 }
             });
         }
@@ -155,7 +159,7 @@ namespace Library_Db_IT_Step_FinalWork
                     Birthdate = new DateTime(1985, 5, 12),
                     Hiring = new DateTime(2020, 9, 1),
                     CountryId = 1,
-                    PositionId = 3,
+                    PositionId = 1,
                     ManagersId = 1
                 },
                 new Teachers()
@@ -167,7 +171,7 @@ namespace Library_Db_IT_Step_FinalWork
                     Birthdate = new DateTime(1990, 3, 20),
                     Hiring = new DateTime(2021, 9, 1),
                     CountryId = 2,
-                    PositionId = 3,
+                    PositionId = 1,
                     ManagersId = 2
                 },
                 new Teachers()
@@ -179,8 +183,8 @@ namespace Library_Db_IT_Step_FinalWork
                     Birthdate = new DateTime(1988, 7, 15),
                     Hiring = new DateTime(2022, 2, 1),
                     CountryId = 3,
-                    PositionId = 3,
-                    ManagersId = 3
+                    PositionId = 1,
+                    ManagersId = 2
                 }
             });
         }
@@ -227,7 +231,7 @@ namespace Library_Db_IT_Step_FinalWork
                 {
                     Id = 1,
                     Name = "Mykola",
-                    PositionId = 1
+                    PositionId = 3
                 }
             });
         }

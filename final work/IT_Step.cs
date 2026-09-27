@@ -10,7 +10,10 @@ namespace final_work
 {
     public class IT_Step : DbContext
     {
-        public IT_Step() { this.Database.EnsureDeleted(); }
+        public IT_Step()
+        { 
+            //this.Database.EnsureDeleted(); 
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
@@ -18,7 +21,11 @@ namespace final_work
                                 Data Source = (localdb)\MSSQLLocalDB;
                                 Initial Catalog = My_Final_work;
                                 Integrated Security = True;
-                                Connect Timeout = 2");
+                                Connect Timeout = 2;                       
+                                Encrypt = False;
+                                Trust Server Certificate = False;
+                                Application Intent = ReadWrite;
+                                Multi Subnet Failover = False");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,7 +41,7 @@ namespace final_work
             modelBuilder.Entity<Teachers>()
                 .Property(x => x.Patronymic)
                 .HasMaxLength(50);
-            
+
             modelBuilder.Entity<Departments>()
                 .Property(x => x.Name)
                 .HasMaxLength(50);
@@ -50,7 +57,7 @@ namespace final_work
             modelBuilder.Entity<Subjects>()
                 .Property(n => n.Name)
                 .HasMaxLength(50);
-            
+
             modelBuilder.Entity<Country>()
                 .Property(n => n.Name)
                 .HasMaxLength(50);
@@ -93,6 +100,10 @@ namespace final_work
                 .WithMany(t => t.Managers)
                 .HasForeignKey(m => m.PositionId);
 
+            modelBuilder.Entity<Positions>()
+               .Property(n => n.Name)
+               .HasMaxLength(50);
+
 
             // * .... * 
 
@@ -102,8 +113,8 @@ namespace final_work
 
             modelBuilder.Entity<Teachers>()
                 .HasMany(m => m.Subjects)
-                .WithMany(t => t.Teachers); 
-            
+                .WithMany(t => t.Teachers);
+
             modelBuilder.Entity<Teachers>()
                 .HasMany(m => m.Departments)
                 .WithMany(t => t.Teachers);
@@ -111,10 +122,18 @@ namespace final_work
             modelBuilder.Entity<Students>()
                 .HasMany(m => m.Subjects)
                 .WithMany(t => t.Students);
-            
+
             modelBuilder.Entity<Students>()
                 .HasMany(m => m.Departments)
                 .WithMany(t => t.Students);
+
+            // 1 .... 1
+
+            modelBuilder.Entity<Positions>()
+                .HasOne(o => o.Director)
+                .WithOne(m => m.Position)
+                .HasForeignKey<Positions>(p => p.DirectorId);
+
 
             modelBuilder.SeedCountry();
             modelBuilder.SeedPositions();
@@ -137,8 +156,6 @@ namespace final_work
         public DbSet<Managers> Managers { get; set; }
         public DbSet<Director> Directors { get; set; }
         public DbSet<Positions> Positions { get; set; }
-
-
     }
     public class Teachers
     {
@@ -155,8 +172,8 @@ namespace final_work
         public string Surname { get; set; }
         [MaxLength(50)]
         public string Patronymic { get; set; }
-        public DateTime Birthdate { get; set; }
-        public DateTime Hiring {  get; set; }
+        public DateTime? Birthdate { get; set; }
+        public DateTime Hiring { get; set; }
         public int CountryId { get; set; }
         public int PositionId { get; set; }
         public int? ManagersId { get; set; }
@@ -164,7 +181,7 @@ namespace final_work
         public Country Country { get; set; }
         public Positions Positions { get; set; }
         public ICollection<Departments> Departments { get; set; }
-        public ICollection<Subjects> Subjects {  get; set; } 
+        public ICollection<Subjects> Subjects { get; set; }
         public ICollection<Groups> Groups { get; set; }
     }
 
@@ -180,8 +197,8 @@ namespace final_work
         public string Name { get; set; }
         [Required]
         public string Building { get; set; }
-        public ICollection<Students> Students {  get; set; } 
-        public ICollection<Teachers> Teachers {  get; set; } 
+        public ICollection<Students> Students { get; set; }
+        public ICollection<Teachers> Teachers { get; set; }
     }
 
     public class Groups
@@ -209,7 +226,7 @@ namespace final_work
         [MaxLength(50)]
         public string Name { get; set; }
         public ICollection<Teachers> Teachers { get; set; }
-        public ICollection<Students> Students{ get; set; }
+        public ICollection<Students> Students { get; set; }
     }
 
     public class Country
@@ -232,7 +249,7 @@ namespace final_work
         }
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Surname { get; set; }    
+        public string Surname { get; set; }
         public int Rating { get; set; }
         public int GroupsId { get; set; }
         public Groups Groups { get; set; }
@@ -258,7 +275,7 @@ namespace final_work
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int PositionId {  get; set; }
+        public int? PositionId { get; set; }
         public Positions Position { get; set; }
     }
 
@@ -270,6 +287,9 @@ namespace final_work
             Managers = new HashSet<Managers>();
         }
         public int Id { get; set; }
+        public string Name { get; set; }
+        public int? DirectorId { get; set; }
+        public Director Director { get; set; }
         public ICollection<Teachers> Teachers { get; set; }
         public ICollection<Managers> Managers { get; set; }
     }

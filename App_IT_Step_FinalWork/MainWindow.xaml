@@ -6,11 +6,25 @@
         xmlns:local="clr-namespace:App_IT_Step_FinalWork"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0*"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-
-    </Grid>
+    <DockPanel LastChildFill="True">
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Students" Padding="20,0,20,0">
+                <MenuItem Click="Print_Students" Header="Print Students" />
+            </MenuItem>
+            <MenuItem Header="Teachers" Padding="20,0,20,0">
+                <MenuItem Click="MenuItem_Click_2" Header="Print Teachers" />
+            </MenuItem>
+            <MenuItem Header="Managers" Padding="20,0,20,0">
+                <MenuItem Click="Print_Managers" Header="Print Managers" />
+                <MenuItem Click="MenuItem_Click"  Header="Add Group to Teacher" />
+            </MenuItem>
+            <MenuItem Header="Director" Padding="20,0,20,0" UseLayoutRounding="False" Height="40">
+                <MenuItem Click="Print_Director" Header="Print Director" />
+                <MenuItem Click="MenuItem_Click_4" Header="Delete Teacher" />
+                <MenuItem Click="MenuItem_Click_3" Header="Delete Manager" />
+            </MenuItem>
+        </Menu>
+        <TextBlock x:Name="gridTitle" DockPanel.Dock="Top" TextAlignment="Center" FontSize="16" Margin="6"></TextBlock>
+        <DataGrid Name="grid"></DataGrid>
+    </DockPanel>
 </Window>

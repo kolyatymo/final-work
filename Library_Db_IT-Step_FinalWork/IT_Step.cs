@@ -19,7 +19,11 @@ namespace Library_Db_IT_Step_FinalWork
                                 Data Source = (localdb)\MSSQLLocalDB;
                                 Initial Catalog = My_Final_work;
                                 Integrated Security = True;
-                                Connect Timeout = 2");
+                                Connect Timeout = 2;                       
+                                Encrypt = False;
+                                Trust Server Certificate = False;
+                                Application Intent = ReadWrite;
+                                Multi Subnet Failover = False");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -94,6 +98,10 @@ namespace Library_Db_IT_Step_FinalWork
                 .WithMany(t => t.Managers)
                 .HasForeignKey(m => m.PositionId);
 
+            modelBuilder.Entity<Positions>()
+               .Property(n => n.Name)
+               .HasMaxLength(50);
+
 
             // * .... * 
 
@@ -117,6 +125,13 @@ namespace Library_Db_IT_Step_FinalWork
                 .HasMany(m => m.Departments)
                 .WithMany(t => t.Students);
 
+            // 1 .... 1
+
+            modelBuilder.Entity<Positions>()
+                .HasOne(o => o.Director)
+                .WithOne(m => m.Position)
+                .HasForeignKey<Positions>(p => p.DirectorId);
+
             modelBuilder.SeedCountry();
             modelBuilder.SeedPositions();
             modelBuilder.SeedDepartments();
@@ -138,7 +153,5 @@ namespace Library_Db_IT_Step_FinalWork
         public DbSet<Managers> Managers { get; set; }
         public DbSet<Director> Directors { get; set; }
         public DbSet<Positions> Positions { get; set; }
-
-
     }
 }

@@ -1,0 +1,25 @@
+﻿<Window x:Class="App_IT_Step_FinalWork.ChangeGroup"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:App_IT_Step_FinalWork"
+        mc:Ignorable="d"
+        Title="ChangeGroup" Height="300" Width="489">
+    <DockPanel LastChildFill="True">
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar>
+                <Label>Teacher Id:</Label>
+                <TextBox x:Name="idTTextBox" MinWidth="50"></TextBox>
+
+                <Label>Group Id:</Label>
+                <TextBox x:Name="idGTextBox" MinWidth="50"></TextBox>
+
+                <Button Click="Button_Click" >Add Group</Button>
+            </ToolBar>
+            
+        </ToolBarTray>
+        <TextBlock x:Name="gridTitle" DockPanel.Dock="Top" TextAlignment="Center" FontSize="16" Margin="6"></TextBlock>
+        <DataGrid Name="grid"></DataGrid>
+    </DockPanel>
+</Window>

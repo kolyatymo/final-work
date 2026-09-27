@@ -188,12 +188,10 @@ namespace final_work.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("PositionId")
+                    b.Property<int?>("PositionId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PositionId");
 
                     b.ToTable("Directors");
 
@@ -202,7 +200,7 @@ namespace final_work.Migrations
                         {
                             Id = 1,
                             Name = "Mykola",
-                            PositionId = 1
+                            PositionId = 3
                         });
                 });
 
@@ -292,22 +290,37 @@ namespace final_work.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("DirectorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("DirectorId")
+                        .IsUnique()
+                        .HasFilter("[DirectorId] IS NOT NULL");
 
                     b.ToTable("Positions");
 
                     b.HasData(
                         new
                         {
-                            Id = 1
+                            Id = 1,
+                            Name = "Teacher"
                         },
                         new
                         {
-                            Id = 2
+                            Id = 2,
+                            Name = "Manager"
                         },
                         new
                         {
-                            Id = 3
+                            Id = 3,
+                            Name = "Director"
                         });
                 });
 
@@ -417,7 +430,7 @@ namespace final_work.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Birthdate")
+                    b.Property<DateTime?>("Birthdate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("CountryId")
@@ -467,7 +480,7 @@ namespace final_work.Migrations
                             ManagersId = 1,
                             Name = "Ivan",
                             Patronymic = "Ivanov",
-                            PositionId = 3,
+                            PositionId = 1,
                             Surname = "Petren"
                         },
                         new
@@ -479,7 +492,7 @@ namespace final_work.Migrations
                             ManagersId = 2,
                             Name = "Oksana",
                             Patronymic = "Petriv",
-                            PositionId = 3,
+                            PositionId = 1,
                             Surname = "Koval"
                         },
                         new
@@ -491,7 +504,7 @@ namespace final_work.Migrations
                             ManagersId = 2,
                             Name = "Adam",
                             Patronymic = "Novakchuk",
-                            PositionId = 3,
+                            PositionId = 1,
                             Surname = "Nowak"
                         });
                 });
@@ -571,17 +584,6 @@ namespace final_work.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("final_work.Director", b =>
-                {
-                    b.HasOne("final_work.Positions", "Position")
-                        .WithMany()
-                        .HasForeignKey("PositionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Position");
-                });
-
             modelBuilder.Entity("final_work.Managers", b =>
                 {
                     b.HasOne("final_work.Positions", "Positions")
@@ -591,6 +593,15 @@ namespace final_work.Migrations
                         .IsRequired();
 
                     b.Navigation("Positions");
+                });
+
+            modelBuilder.Entity("final_work.Positions", b =>
+                {
+                    b.HasOne("final_work.Director", "Director")
+                        .WithOne("Position")
+                        .HasForeignKey("final_work.Positions", "DirectorId");
+
+                    b.Navigation("Director");
                 });
 
             modelBuilder.Entity("final_work.Students", b =>
@@ -632,6 +643,12 @@ namespace final_work.Migrations
             modelBuilder.Entity("final_work.Country", b =>
                 {
                     b.Navigation("Teachers");
+                });
+
+            modelBuilder.Entity("final_work.Director", b =>
+                {
+                    b.Navigation("Position")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("final_work.Groups", b =>
